@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Assemble PDF
-        run: cat pdf-part1.b64 pdf-part2.b64 pdf-part3.b64 | base64 -d > Avinash_Nandyala_FDE.pdf
+        run: cat pdf-chunk-*.b64 | base64 -d > Avinash_Nandyala_FDE.pdf
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
