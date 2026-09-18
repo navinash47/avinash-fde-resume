@@ -18,8 +18,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble PDF
-        run: cat pdf-chunk-*.b64 | base64 -d > Avinash_Nandyala_FDE.pdf
+      - name: Decode PDF from verified base64
+        run: |
+          base64 -d Avinash_Nandyala_FDE.pdf.b64 > Avinash_Nandyala_FDE.pdf
+          SIZE=$(stat -c%s Avinash_Nandyala_FDE.pdf)
+          echo "PDF size: $SIZE bytes"
+          test "$SIZE" -gt 20000
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
