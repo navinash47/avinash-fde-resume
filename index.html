@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avinash Nandyala — Resume</title>
+    <meta name="description" content="Resume of Avinash Nandyala — Forward Deployed Engineer" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f5f7; color: #1a1f1c; }
+      .app { display: flex; flex-direction: column; min-height: 100dvh; }
+      header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 1rem; background: #fff; border-bottom: 1px solid #e2e5ea; flex-shrink: 0; }
+      header h1 { margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
+      .actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+      .btn { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.85rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; text-decoration: none; border: 1px solid transparent; cursor: pointer; background: #1a5c45; color: #fff; transition: background 0.15s; }
+      .btn:hover { background: #144a38; }
+      .viewer-wrap { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 1rem; display: flex; justify-content: center; }
+      #pdf-container { width: min(100%, 850px); }
+      #pdf-container canvas { display: block; width: 100% !important; height: auto !important; margin: 0 auto 1rem; background: #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); border-radius: 2px; }
+      .status { text-align: center; padding: 3rem 1rem; color: #667085; font-size: 0.95rem; }
+      .fallback { display: none; text-align: center; padding: 3rem 1.5rem; }
+      .fallback p { margin: 0 0 1rem; color: #667085; }
+      @media (max-width: 480px) { header { flex-wrap: wrap; } header h1 { font-size: 0.9rem; } .viewer-wrap { padding: 0.5rem; } }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <h1>Avinash Nandyala — Resume</h1>
+        <div class="actions">
+          <a class="btn" href="/Avinash_Nandyala_FDE.pdf" download="Avinash_Nandyala_FDE.pdf">Download PDF</a>
+        </div>
+      </header>
+      <main class="viewer-wrap">
+        <div id="pdf-container"><p class="status" id="loading">Loading resume…</p></div>
+        <div class="fallback" id="fallback">
+          <p>Unable to display the PDF in your browser.</p>
+          <a class="btn" href="/Avinash_Nandyala_FDE.pdf" download="Avinash_Nandyala_FDE.pdf">Download PDF</a>
+        </div>
+      </main>
+    </div>
+    <script type="module">
+      const PDF_URL = '/Avinash_Nandyala_FDE.pdf'
+      const container = document.getElementById('pdf-container')
+      const loading = document.getElementById('loading')
+      const fallback = document.getElementById('fallback')
+      try {
+        const pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.min.mjs')
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs'
+        const pdf = await pdfjsLib.getDocument(PDF_URL).promise
+        loading.remove()
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+          const page = await pdf.getPage(pageNum)
+          const viewport = page.getViewport({ scale: 1.5 })
+          const canvas = document.createElement('canvas')
+          const context = canvas.getContext('2d')
+          canvas.width = viewport.width
+          canvas.height = viewport.height
+          container.appendChild(canvas)
+          await page.render({ canvasContext: context, viewport }).promise
+        }
+      } catch (err) {
+        console.error('PDF render failed:', err)
+        container.style.display = 'none'
+        fallback.style.display = 'block'
+      }
+    </script>
+  </body>
+</html>
