@@ -4,12 +4,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  contents: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,14 +12,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Prepare site
         run: |
-          mkdir -p _site
-          cp index.html Avinash_Nandyala_FDE.pdf CNAME _site/
-          touch _site/.nojekyll
-          ls -la _site/
-          test $(stat -c%s _site/Avinash_Nandyala_FDE.pdf) -gt 20000
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+          mkdir -p public
+          cp index.html Avinash_Nandyala_FDE.pdf CNAME public/
+          touch public/.nojekyll
+          ls -la public/
+          test $(stat -c%s public/Avinash_Nandyala_FDE.pdf) -gt 20000
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: _site
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
