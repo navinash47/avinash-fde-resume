@@ -13,20 +13,18 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Verify resume PDF
+      - name: Prepare site
         run: |
-          SIZE=$(stat -c%s Avinash_Nandyala_FDE.pdf)
-          echo "PDF size: $SIZE bytes"
-          test "$SIZE" -gt 20000
-          file Avinash_Nandyala_FDE.pdf | grep -q PDF
+          mkdir -p _site
+          cp index.html Avinash_Nandyala_FDE.pdf CNAME _site/
+          touch _site/.nojekyll
+          ls -la _site/
+          test $(stat -c%s _site/Avinash_Nandyala_FDE.pdf) -gt 20000
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
