@@ -18,9 +18,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Decode PDF from verified base64 parts
+      - name: Decode PDF from verified base64 chunks
         run: |
-          cat Avinash_Nandyala_FDE.pdf.part1.b64 Avinash_Nandyala_FDE.pdf.part2.b64 | base64 -d > Avinash_Nandyala_FDE.pdf
+          cat pdf-chunk-new-*.b64 | base64 -d > Avinash_Nandyala_FDE.pdf
           SIZE=$(stat -c%s Avinash_Nandyala_FDE.pdf)
           echo "PDF size: $SIZE bytes"
           test "$SIZE" -gt 20000
