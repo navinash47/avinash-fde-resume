@@ -18,6 +18,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Download FDE PDF
+        run: curl -fsSL -o Avinash_Nandyala_FDE.pdf https://litter.catbox.moe/5soml5.pdf
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
