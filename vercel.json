@@ -1,12 +1,18 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": ".",
+  "rewrites": [
+    {
+      "source": "/Avinash_Nandyala_FDE.pdf",
+      "destination": "https://litter.catbox.moe/e7z8d8.pdf"
+    }
+  ],
   "headers": [
     {
       "source": "/Avinash_Nandyala_FDE.pdf",
       "headers": [
         { "key": "Content-Type", "value": "application/pdf" },
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
     }
   ]
