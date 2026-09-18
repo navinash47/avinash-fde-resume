@@ -1,5 +1,6 @@
 {
-  "buildCommand": "cat pdf-chunk-*.b64 | base64 -d > Avinash_Nandyala_FDE.pdf",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/Avinash_Nandyala_FDE.pdf",

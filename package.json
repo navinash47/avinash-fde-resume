@@ -1,0 +1,7 @@
+{
+  "name": "avinash-fde-resume",
+  "private": true,
+  "scripts": {
+    "build": "cat pdf-chunk-*.b64 | base64 -d > Avinash_Nandyala_FDE.pdf && test $(stat -c%s Avinash_Nandyala_FDE.pdf) -gt 20000"
+  }
+}
